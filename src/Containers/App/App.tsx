@@ -11,6 +11,7 @@ interface ItemProps {
 const App = () => {
   const [items, setItems] = useState<ItemProps[]>([]);
   const [count, setCount] = useState(0);
+  const [win, setWin] = useState(false);
 
   const createItems = () => {
     const items = [];
@@ -31,17 +32,26 @@ const App = () => {
   }
 
   const changeItem = (id: number) => {
+    if (!win) {
       if (!items[id].clicked) {
         const itemsCopy = [...items];
         itemsCopy[id].clicked = true;
         setItems(itemsCopy);
         setCount(prevState => prevState + 1);
+
+        if (items[id].hasItem) {
+          setWin(true);
+        }
       }
+    } else {
+      alert('Game over! Reset game');
+    }
   };
 
   const resetGame = () => {
     setCount(0);
     createItems();
+    setWin(false);
   };
 
   return (
