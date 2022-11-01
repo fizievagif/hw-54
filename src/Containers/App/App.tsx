@@ -10,6 +10,7 @@ interface ItemProps {
 
 const App = () => {
   const [items, setItems] = useState<ItemProps[]>([]);
+  const [count, setCount] = useState(0);
 
   const createItems = () => {
     const items = [];
@@ -30,11 +31,17 @@ const App = () => {
   }
 
   const changeItem = (id: number) => {
-    if (!items[id].clicked) {
-      const itemsCopy = [...items];
-      itemsCopy[id].clicked = true;
-      setItems(itemsCopy);
-    }
+      if (!items[id].clicked) {
+        const itemsCopy = [...items];
+        itemsCopy[id].clicked = true;
+        setItems(itemsCopy);
+        setCount(prevState => prevState + 1);
+      }
+  };
+
+  const resetGame = () => {
+    setCount(0);
+    createItems();
   };
 
   return (
@@ -48,6 +55,8 @@ const App = () => {
             onItemClick={() => changeItem(item.id)}/>
         ))}
       </div>
+      <p>Count: {count}</p>
+      <button onClick={resetGame}>Reset</button>
     </div>
   );
 };
